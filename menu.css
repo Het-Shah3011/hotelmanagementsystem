@@ -1,0 +1,244 @@
+/* ===== GLOBAL ===== */
+body {
+  background-color: #f4f1ed;
+  font-family: 'Segoe UI', sans-serif;
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.restaurant-order-system {
+  background: #ffffff;
+  padding: 30px;
+  max-width: 850px;
+  margin: 40px auto;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2dcd3;
+}
+
+/* ===== HEADER ===== */
+.restaurant-order-system h1 {
+  text-align: center;
+  color: #d35400;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+/* ===== WAITER SERVICE ===== */
+.waiter-service {
+  background: #fff7f1;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid #f0e0d1;
+}
+
+.waiter-service h2 {
+  color: #d35400;
+  margin-bottom: 18px;
+  font-size: 22px;
+}
+
+.waiter-service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f2eae2;
+}
+
+.waiter-service-item span {
+  font-size: 16px;
+}
+
+.waiter-service-item button {
+  background: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.waiter-service-item button:hover {
+  background: #cf711d;
+}
+
+/* ===== MENU CATEGORY ===== */
+.menu-category {
+  background: #fdfaf6;
+  padding: 22px;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  border: 1px solid #f0e8dc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.menu-category h2 {
+  color: #d35400;
+  margin-bottom: 18px;
+  font-size: 20px;
+  border-bottom: 1px dashed #e0d2c3;
+  padding-bottom: 8px;
+}
+
+/* ===== MENU ITEM ===== */
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dotted #eee1d6;
+}
+
+.item-info {
+  flex-grow: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.item-price {
+  font-size: 14px;
+  color: #888;
+}
+
+/* ===== ADD / QTY BUTTONS ===== */
+.add-icon-btn {
+  background: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-icon-btn:hover {
+  background: #cf711d;
+}
+
+.qty-control {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.qty-control button {
+  background: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.qty-control button:hover {
+  background: #cf711d;
+}
+
+.qty-control span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.order-button,
+.pay-now-button,
+.call-waiter-button {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 16px auto;
+  padding: 14px 24px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: background 0.2s ease;
+}
+
+.order-button {
+  background: #e67e22;
+  color: white;
+}
+.order-button:hover {
+  background: #cf711d;
+}
+
+.pay-now-button {
+  background: #2980b9;
+  color: white;
+}
+.pay-now-button:hover {
+  background: #216a9c;
+}
+
+.call-waiter-button {
+  background: #27ae60;
+  color: white;
+}
+.call-waiter-button:hover {
+  background: #1e8c4f;
+}
+
+/* ===== LOADER ===== */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.85);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 4px solid #ddd;
+  border-top: 4px solid #e67e22;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #d35400;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+}

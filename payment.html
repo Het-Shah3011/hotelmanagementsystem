@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment | Hotel Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+
+<div class="payment-summary">
+  <h1>💳 Pay Your Bill</h1>
+
+  <div id="order-details">Loading your order...</div>
+
+  <div id="payment-buttons" style="display:none;">
+    <button class="online-btn" onclick="payOnline()">Pay Online</button>
+    <button class="offline-btn" onclick="payOffline()">Pay Offline</button>
+  </div>
+</div>
+
+<script src="payment.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Table Selection | Hotel Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <h1 class="main-title">Hotel Management System</h1>
+<p class="subtitle">Smart • Fast • Digital Ordering</p>
+<br>
+
+
+  <h2>🍽️ Please Select Your Table Number</h2>
+
+  <select id="tableSelect">
+    <option value="">-- Choose Table Number --</option>
+    <option value="1">Table 1</option>
+    <option value="2">Table 2</option>
+    <option value="3">Table 3</option>
+    <option value="4">Table 4</option>
+    <option value="5">Table 5</option>
+    <option value="6">Table 6</option>
+    <option value="7">Table 7</option>
+  </select>
+
+  <div id="submitBtn" style="display: none;">
+    <button id="goBtn">🧾 Go to Menu</button>
+  </div>
+
+  <div class="loading-wrapper" id="loaderWrapper">
+    <div class="loader"></div>
+  </div>
+
+  <!-- JS -->
+  <script src="table.js"></script>
+</body>
+</html>

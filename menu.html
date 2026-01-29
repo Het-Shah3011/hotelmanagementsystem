@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Menu | Hotel Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+<div class="restaurant-order-system">
+  <h1>🧾 Food Menu - Table No. <span id="tableNoDisplay">--</span></h1>
+
+  <!-- Waiter Service -->
+  <div class="waiter-service">
+    <h2>🛎️ Waiter Service</h2>
+
+    <div class="waiter-service-item">
+      <span>Table is not clean</span>
+      <button onclick="callWaiterIssue('Table cleaning required')">Call</button>
+    </div>
+
+    <div class="waiter-service-item">
+      <span>Water jug is empty</span>
+      <button onclick="callWaiterIssue('Water refill required')">Call</button>
+    </div>
+
+    <div class="waiter-service-item">
+      <span>Need tissue paper</span>
+      <button onclick="callWaiterIssue('Tissue paper required')">Call</button>
+    </div>
+
+    <div class="waiter-service-item">
+      <span>Spilled food on floor</span>
+      <button onclick="callWaiterIssue('Food spill cleanup required')">Call</button>
+    </div>
+  </div>
+
+  <div id="menu-container"></div>
+
+  <button class="order-button" onclick="submitOrder()">🛒 Place Order</button>
+  <button class="pay-now-button" onclick="goToPaymentPage()">💳 Pay Now</button>
+  <button class="call-waiter-button" onclick="callWaiter()">📞 Call a Waiter</button>
+
+  <!-- Loader -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader"></div>
+    <p>Please wait...</p>
+  </div>
+</div>
+
+<script src="menu.js"></script>
+</body>
+</html>
