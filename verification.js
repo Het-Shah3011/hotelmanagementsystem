@@ -1,63 +1,77 @@
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbyyHZI-HrYxjPKJ58CJD-CKPAOIxGNXdsvfSSXq33PGa5REaLIsWXf9EVXW7VTiPA7daA/exec";
-
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyHZI-HrYxjPKJ58CJD-CKPAOIxGNXdsvfSSXq33PGa5REaLIsWXf9EVXW7VTiPA7daA/exec";
 const PAYMENT_PAGE_URL = "payment.html";
 
 const orderID = localStorage.getItem("orderID");
 const tableNo = localStorage.getItem("tableNo");
-
 const orderDetailsDiv = document.getElementById("order-details");
 
+// ================= BACK NAVIGATION GUARD =================
+// Once the order is placed, a back-press should not return the customer
+// to the editable menu - keep them on this status page (or push them
+// forward if they've already paid).
+if (localStorage.getItem("orderStage") === "paid") {
+  window.location.replace(PAYMENT_PAGE_URL);
+}
+history.pushState(null, "", location.href);
+window.addEventListener("popstate", () => {
+  history.pushState(null, "", location.href);
+});
+
 if (!orderID || !tableNo) {
-  orderDetailsDiv.innerHTML =
-    "<p style='color:red;'>❌ No Order ID or Table number found!</p>";
+  orderDetailsDiv.innerHTML = "<p style='color:#c0392b;text-align:center;padding:16px;'>No Order ID or Table number found!</p>";
 } else {
+  const TOKEN_KEY = "orderToken_" + orderID;
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
 
   function loadOrderDetails() {
-    fetch(`${WEB_APP_URL}?orderId=${orderID}`)
+    fetch(`${WEB_APP_URL}?orderId=${encodeURIComponent(orderID)}`)
       .then(res => res.json())
       .then(data => {
+        if (data.token) localStorage.setItem(TOKEN_KEY, data.token);
 
         if (!data.items || data.items.length === 0) {
-          orderDetailsDiv.innerHTML =
-            "<p>⚠️ No items found for this order.</p>";
+          orderDetailsDiv.innerHTML = "<p style='text-align:center;color:#9b8263;padding:16px;'>No items found for this order.</p>";
           return;
         }
 
-        let html = `
-          <p><strong>Order ID:</strong> ${orderID}</p>
-          <p><strong>Table:</strong> ${tableNo}</p>
-          <p><strong>Status:</strong> ${data.status}</p>
-          <p><strong>Verification:</strong> ${data.verification}</p>
-          <ul>
+        let itemsHtml = data.items.map(item =>
+          `<div class="order-item-line">${escapeHtml(item)}</div>`
+        ).join("");
+
+        const verificationDone = data.verification && data.verification.toLowerCase() === "done";
+
+        // Update progress steps
+        if (verificationDone) {
+          document.getElementById("stepVerify").classList.add("active");
+          document.querySelectorAll(".step-line")[0].classList.add("done");
+        }
+
+        orderDetailsDiv.innerHTML = `
+          <div class="order-meta">
+            <div class="order-meta-row"><span>Order ID</span><strong>${escapeHtml(orderID)}</strong></div>
+            <div class="order-meta-row"><span>Table</span><strong>Table ${escapeHtml(tableNo)}</strong></div>
+            <div class="order-meta-row"><span>Status</span><span class="status-badge">${escapeHtml(data.status || 'Active')}</span></div>
+            <div class="order-meta-row"><span>Verification</span><span class="verify-badge">${escapeHtml(data.verification || 'Pending')}</span></div>
+          </div>
+          <div class="order-items">${itemsHtml}</div>
+          <div class="order-total-row"><span>Total</span><span>&#8377;${Number(data.total) || 0}</span></div>
         `;
 
-        data.items.forEach(item => {
-          html += `<li>${item}</li>`;
-        });
-
-        html += `
-          </ul>
-          <h2>Total: ₹${data.total}</h2>
-        `;
-
-        orderDetailsDiv.innerHTML = html;
-
-        // ✅ Auto redirect when waiter verifies
-        if (
-          data.verification &&
-          data.verification.toLowerCase() === "done"
-        ) {
-          window.location.href = PAYMENT_PAGE_URL;
+        if (verificationDone) {
+          setTimeout(() => window.location.href = PAYMENT_PAGE_URL, 1000);
         }
       })
       .catch(err => {
-        orderDetailsDiv.innerHTML =
-          "<p style='color:red;'>❌ Failed to load order.</p>";
+        orderDetailsDiv.innerHTML = "<p style='color:#c0392b;text-align:center;padding:16px;'>Failed to load order. Retrying…</p>";
         console.error(err);
       });
   }
 
   loadOrderDetails();
-  setInterval(loadOrderDetails, 5000); // refresh every 5 seconds
+  setInterval(loadOrderDetails, 5000);
 }

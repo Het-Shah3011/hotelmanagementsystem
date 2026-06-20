@@ -2,54 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Food Menu | Hotel Management</title>
+  <title>Menu | Spice & Saffron</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="menu.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="restaurant-order-system">
-  <h1>🧾 Food Menu - Table No. <span id="tableNoDisplay">--</span></h1>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <div class="logo-sm">S&S</div>
+      <div>
+        <div class="brand-sm">Spice & Saffron</div>
+        <div class="table-badge">Table <span id="tableNoDisplay">--</span></div>
+      </div>
+    </div>
+    <div class="cart-pill" id="cartPill" onclick="scrollToOrder()">
+      <span>🛒</span>
+      <span id="cartCount">0</span>
+      <span class="cart-sep">·</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+  </header>
 
-  <!-- Waiter Service -->
-  <div class="waiter-service">
-    <h2>🛎️ Waiter Service</h2>
+  <!-- CATEGORY NAV -->
+  <nav class="cat-nav" id="catNav"></nav>
 
-    <div class="waiter-service-item">
-      <span>Table is not clean</span>
-      <button onclick="callWaiterIssue('Table cleaning required')">Call</button>
+  <!-- MAIN CONTENT -->
+  <main class="main-wrap">
+
+    <!-- WAITER SERVICE CARD -->
+    <section class="service-card">
+      <h3 class="section-heading">🛎️ Need Assistance?</h3>
+      <div class="service-grid">
+        <button class="service-btn" onclick="callWaiterIssue('Table cleaning required')">
+          <span class="s-icon">🧹</span>
+          <span>Clean Table</span>
+        </button>
+        <button class="service-btn" onclick="callWaiterIssue('Water refill required')">
+          <span class="s-icon">💧</span>
+          <span>Water Refill</span>
+        </button>
+        <button class="service-btn" onclick="callWaiterIssue('Tissue paper required')">
+          <span class="s-icon">🧻</span>
+          <span>Tissue Paper</span>
+        </button>
+        <button class="service-btn" onclick="callWaiterIssue('Food spill cleanup required')">
+          <span class="s-icon">🫧</span>
+          <span>Food Spill</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- MENU CONTAINER -->
+    <div id="menu-container"></div>
+
+    <!-- ORDER SUMMARY SECTION -->
+    <section class="order-summary" id="orderSummary" style="display:none;">
+      <h3 class="section-heading">🛒 Your Order</h3>
+      <div id="orderList" class="order-list"></div>
+      <div class="order-total-row">
+        <span>Total</span>
+        <span id="orderTotalDisplay">₹0</span>
+      </div>
+    </section>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-bar">
+      <button class="action-btn btn-place" onclick="submitOrder()">
+        <span>🧾</span> Place Order
+      </button>
+      <button class="action-btn btn-pay" onclick="goToPaymentPage()">
+        <span>💳</span> Pay Now
+      </button>
+      <button class="action-btn btn-waiter" onclick="callWaiter()">
+        <span>📞</span> Call Waiter
+      </button>
     </div>
 
-    <div class="waiter-service-item">
-      <span>Water jug is empty</span>
-      <button onclick="callWaiterIssue('Water refill required')">Call</button>
-    </div>
+  </main>
 
-    <div class="waiter-service-item">
-      <span>Need tissue paper</span>
-      <button onclick="callWaiterIssue('Tissue paper required')">Call</button>
-    </div>
-
-    <div class="waiter-service-item">
-      <span>Spilled food on floor</span>
-      <button onclick="callWaiterIssue('Food spill cleanup required')">Call</button>
-    </div>
-  </div>
-
-  <div id="menu-container"></div>
-
-  <button class="order-button" onclick="submitOrder()">🛒 Place Order</button>
-  <button class="pay-now-button" onclick="goToPaymentPage()">💳 Pay Now</button>
-  <button class="call-waiter-button" onclick="callWaiter()">📞 Call a Waiter</button>
-
-  <!-- Loader -->
+  <!-- LOADER -->
   <div id="loaderOverlay" class="loader-overlay">
-    <div class="loader"></div>
-    <p>Please wait...</p>
+    <div class="loader-ring"></div>
+    <p>Please wait…</p>
   </div>
-</div>
 
-<script src="menu.js"></script>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="menu.js"></script>
 </body>
 </html>

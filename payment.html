@@ -2,24 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Payment | Hotel Management System</title>
+  <title>Payment | Spice & Saffron</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="payment.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="payment-summary">
-  <h1>💳 Pay Your Bill</h1>
+  <header class="top-bar">
+    <div class="logo-sm">S&S</div>
+    <div class="brand-sm">Spice & Saffron</div>
+  </header>
 
-  <div id="order-details">Loading your order...</div>
+  <main class="main-wrap">
+    <div class="pay-card">
+      <div class="pay-icon">💳</div>
+      <h1 class="pay-title">Pay Your Bill</h1>
+      <p class="pay-sub">Review your order below</p>
 
-  <div id="payment-buttons" style="display:none;">
-    <button class="online-btn" onclick="payOnline()">Pay Online</button>
-    <button class="offline-btn" onclick="payOffline()">Pay Offline</button>
-  </div>
-</div>
+      <div id="order-details" class="order-details">
+        <div class="loading-state">
+          <div class="loader-ring"></div>
+          <span>Loading your order…</span>
+        </div>
+      </div>
 
-<script src="payment.js"></script>
+      <div id="payment-buttons" class="payment-buttons" style="display:none;">
+        <button class="pay-btn btn-online" onclick="payOnline()">
+          <span class="pay-btn-icon">📱</span>
+          <div>
+            <div class="pay-btn-title">Pay Online</div>
+            <div class="pay-btn-sub">UPI / PhonePe / GPay</div>
+          </div>
+        </button>
+        <button class="pay-btn btn-offline" onclick="payOffline()">
+          <span class="pay-btn-icon">🙋</span>
+          <div>
+            <div class="pay-btn-title">Pay at Counter</div>
+            <div class="pay-btn-sub">Cash / Card at desk</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="payment.js"></script>
 </body>
 </html>

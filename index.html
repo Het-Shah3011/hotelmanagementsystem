@@ -1,43 +1,105 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Table Selection | Hotel Management</title>
+  <title>Welcome | Spice & Saffron</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1 class="main-title">Hotel Management System</h1>
-<p class="subtitle">Smart • Fast • Digital Ordering</p>
-<br>
 
+  <div class="bg-pattern"></div>
 
-  <h2>🍽️ Please Select Your Table Number</h2>
-
-  <select id="tableSelect">
-    <option value="">-- Choose Table Number --</option>
-    <option value="1">Table 1</option>
-    <option value="2">Table 2</option>
-    <option value="3">Table 3</option>
-    <option value="4">Table 4</option>
-    <option value="5">Table 5</option>
-    <option value="6">Table 6</option>
-    <option value="7">Table 7</option>
-  </select>
-
-  <div id="submitBtn" style="display: none;">
-    <button id="goBtn">🧾 Go to Menu</button>
+  <div class="hero-section">
+    <div class="logo-badge">S&S</div>
+    <h1 class="brand-name">Spice & Saffron</h1>
+    <p class="brand-tagline">Fine Dining Â· Digital Ordering</p>
   </div>
 
-  <div class="loading-wrapper" id="loaderWrapper">
-    <div class="loader"></div>
+  <div class="card">
+    <div class="card-icon">ðŸª‘</div>
+    <h2 class="card-title">Select Your Table</h2>
+    <p class="card-subtitle">Choose your table number to start ordering</p>
+
+    <div class="table-grid" id="tableGrid">
+      <!-- Tables rendered by JS -->
+    </div>
+
+    <div id="selectedInfo" class="selected-info" style="display:none;">
+      <span class="selected-label">Selected</span>
+      <span id="selectedTableName" class="selected-table-name">--</span>
+    </div>
+
+    <div id="submitBtn" style="display: none;">
+      <button id="goBtn" class="go-btn">
+        <span class="btn-text">Go to Menu</span>
+        <span class="btn-arrow">â†’</span>
+      </button>
+    </div>
   </div>
 
-  <!-- JS -->
-  <script src="table.js"></script>
+  <div class="footer-note">Scan Â· Order Â· Enjoy Â· Repeat</div>
+
+  <div class="loading-overlay" id="loaderWrapper">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Setting up your tableâ€¦</p>
+  </div>
+
+  <script>
+    if (localStorage.getItem("sessionLocked") === "true" && localStorage.getItem("orderID") && localStorage.getItem("tableNo")) {
+      window.location.replace("menu.html");
+    }
+
+    // Render table cards
+    const grid = document.getElementById("tableGrid");
+    for (let i = 1; i <= 7; i++) {
+      const card = document.createElement("div");
+      card.className = "table-card";
+      card.dataset.value = i;
+      card.innerHTML = `<span class="table-num">${i}</span><span class="table-label">Table</span>`;
+      card.addEventListener("click", () => selectTable(card, i));
+      grid.appendChild(card);
+    }
+
+    let selectedTable = null;
+
+    function selectTable(card, num) {
+      document.querySelectorAll(".table-card").forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      selectedTable = num;
+      document.getElementById("selectedInfo").style.display = "flex";
+      document.getElementById("selectedTableName").textContent = `Table ${num}`;
+      document.getElementById("submitBtn").style.display = "block";
+    }
+
+    document.getElementById("goBtn").addEventListener("click", () => {
+      if (!selectedTable) return;
+
+      ["orderID", "tableNo", "menuCart", "orderSubmitted", "paymentStatus"].forEach(key => localStorage.removeItem(key));
+      const now = new Date();
+      const timeStr =
+        now.getFullYear().toString() +
+        (now.getMonth()+1).toString().padStart(2,"0") +
+        now.getDate().toString().padStart(2,"0") +
+        now.getHours().toString().padStart(2,"0") +
+        now.getMinutes().toString().padStart(2,"0") +
+        now.getSeconds().toString().padStart(2,"0");
+
+      const orderID = `T${selectedTable}-${timeStr}`;
+      localStorage.setItem("orderID", orderID);
+      localStorage.setItem("tableNo", selectedTable);
+      localStorage.setItem("sessionLocked", "true");
+
+      document.getElementById("goBtn").disabled = true;
+      document.getElementById("loaderWrapper").style.display = "flex";
+      setTimeout(() => window.location.replace("menu.html"), 1200);
+    });
+
+    document.addEventListener("contextmenu", e => e.preventDefault());
+  </script>
 </body>
 </html>
+
+
+

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Grand Plate — Staff</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FAF7F2;
+      --surface:   #FFFFFF;
+      --border:    rgba(0,0,0,0.08);
+      --text:      #1A1612;
+      --muted:     #8A8078;
+      --accent:    #C0392B;
+      --accent-lt: #FBF0EF;
+      --gold:      #A0742A;
+      --gold-lt:   #FBF6EC;
+      --green:     #2D7A4A;
+      --green-lt:  #EBF5EF;
+      --nav-h:     68px;
+      --hdr-h:     60px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── PIN GATE ── */
+    #pin-gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .pin-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--text);
+      margin-bottom: 4px;
+      letter-spacing: -0.3px;
+    }
+
+    .pin-tag {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    .pin-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px 28px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+    }
+
+    .pin-card h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .pin-card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .pin-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .pin-digit {
+      width: 56px;
+      height: 64px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-text-security: disc;
+    }
+
+    .pin-digit:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.12);
+    }
+
+    .pin-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .pin-btn:hover  { opacity: 0.92; }
+    .pin-btn:active { transform: scale(0.98); }
+
+    .pin-error {
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 10px;
+      min-height: 16px;
+      font-weight: 500;
+    }
+
+    .pin-shake { animation: shake 0.38s ease; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60%  { transform: translateX(-7px); }
+      40%,80%  { transform: translateX(7px); }
+    }
+
+    /* ── DASHBOARD SHELL ── */
+    #app {
+      display: none;
+      flex-direction: column;
+      height: 100dvh;
+    }
+
+    /* ── HEADER ── */
+    .hdr {
+      height: var(--hdr-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hdr-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hdr-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    .hdr-role {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .hdr-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--green-lt);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.3px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    .lock-btn {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .lock-btn:hover { background: var(--accent-lt); color: var(--accent); border-color: var(--accent); }
+
+    /* ── PAGE HEADER (per-section) ── */
+    .page-hdr {
+      padding: 18px 20px 14px;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .page-hdr h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .page-hdr p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── IFRAME AREA ── */
+    .iframe-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .page-frame.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      height: var(--nav-h);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--muted);
+      transition: color 0.2s;
+      padding: 6px 4px;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.2s, transform 0.2s;
+    }
+
+    .nav-item span {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+    }
+
+    .nav-item.active svg {
+      transform: scale(1.08);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* ── PAGE TITLE BAR ── */
+    .title-bar {
+      display: none;
+      padding: 14px 20px 12px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .title-bar.visible { display: block; }
+
+    .title-bar h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .title-bar small {
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div class="pin-logo">The Grand Plate</div>
+  <div class="pin-tag">Staff Portal</div>
+
+  <div class="pin-card" id="pin-card">
+    <h2>Welcome back</h2>
+    <p>Enter your 4-digit PIN to continue</p>
+
+    <div class="pin-dots">
+      <input class="pin-digit" id="p1" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pin-digit" id="p2" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pin-digit" id="p3" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pin-digit" id="p4" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+    </div>
+
+    <button class="pin-btn" id="pin-submit">Unlock</button>
+    <div class="pin-error" id="pin-error"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD APP -->
+<div id="app">
+
+  <!-- Top Header -->
+  <header class="hdr">
+    <div class="hdr-brand">
+      <div class="hdr-name">The Grand Plate</div>
+      <div class="hdr-role">Management Dashboard</div>
+    </div>
+    <div class="hdr-right">
+      <div class="live-pill"><div class="live-dot"></div>Live</div>
+      <button class="lock-btn" id="lock-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Lock
+      </button>
+    </div>
+  </header>
+
+  <!-- Dynamic Title Bar -->
+  <div class="title-bar" id="title-bar">
+    <h2 id="title-text">Live Orders</h2>
+    <small id="title-sub">Real-time kitchen view</small>
+  </div>
+
+  <!-- Iframe Pages -->
+  <div class="iframe-area">
+    <iframe id="f1" class="page-frame" src="https://waiter30.blogspot.com/"   title="Live Orders"></iframe>
+    <iframe id="f2" class="page-frame" src="https://menuofhms30.blogspot.com/" title="Check Order"></iframe>
+    <iframe id="f3" class="page-frame" src="https://paid30.blogspot.com/"      title="Payment Status"></iframe>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+
+    <button class="nav-item" id="n1" onclick="showPage(1)">
+      <svg viewBox="0 0 24 24"><path d="M9 20H5a2 2 0 0 1-2-2V9l9-6 9 6v9a2 2 0 0 1-2 2h-4"/><rect x="9" y="14" width="6" height="6"/></svg>
+      <span>Orders</span>
+    </button>
+
+    <button class="nav-item" id="n2" onclick="showPage(2)">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Check</span>
+    </button>
+
+    <button class="nav-item" id="n3" onclick="showPage(3)">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      <span>Payments</span>
+    </button>
+
+
+
+  </nav>
+
+</div>
+
+<script>
+  const PIN = "1234";
+  const KEY = "gp_unlocked";
+  let fails = 0;
+
+  const pages = {
+    1: { title: "Live Orders",    sub: "Real-time kitchen view" },
+    2: { title: "Check Order",    sub: "Look up table status" },
+    3: { title: "Payment Status", sub: "Bills and settlements" },
+    4: { title: "Income Report",  sub: "Today's performance" }
+
+  const digits = [1,2,3,4].map(i => document.getElementById("p" + i));
+
+  (function init() {
+    if (sessionStorage.getItem(KEY) === "1") unlock(false);
+    else setTimeout(() => digits[0].focus(), 200);
+  })();
+
+  digits.forEach((d, i) => {
+    d.addEventListener("input", () => {
+      d.value = d.value.replace(/\D/, "");
+      if (d.value && i < 3) digits[i + 1].focus();
+      if (i === 3 && d.value) verify();
+    });
+    d.addEventListener("keydown", e => {
+      if (e.key === "Backspace" && !d.value && i > 0) digits[i - 1].focus();
+      if (e.key === "Enter") verify();
+    });
+  });
+
+  document.getElementById("pin-submit").addEventListener("click", verify);
+
+  function verify() {
+    if (fails >= 5) return;
+    const entered = digits.map(d => d.value).join("");
+    if (entered.length < 4) { setErr("Enter all 4 digits first."); return; }
+
+    if (entered === PIN) {
+      sessionStorage.setItem(KEY, "1");
+      fails = 0;
+      unlock(true);
+    } else {
+      fails++;
+      const left = 5 - fails;
+      const card = document.getElementById("pin-card");
+      card.classList.remove("pin-shake");
+      void card.offsetWidth;
+      card.classList.add("pin-shake");
+      digits.forEach(d => d.value = "");
+      digits[0].focus();
+      if (left > 0) setErr("Incorrect PIN. " + left + " attempt" + (left !== 1 ? "s" : "") + " left.");
+      else { setErr("Too many attempts. Refresh the page."); document.getElementById("pin-submit").disabled = true; }
+    }
+  }
+
+  function setErr(msg) {
+    document.getElementById("pin-error").textContent = msg;
+  }
+
+  function unlock(animate) {
+    document.getElementById("pin-gate").style.display = "none";
+    const app = document.getElementById("app");
+    app.style.display = "flex";
+    showPage(1);
+  }
+
+  function showPage(n) {
+    [1,2,3].forEach(i => {
+      document.getElementById("f" + i).classList.toggle("active", i === n);
+      document.getElementById("n" + i).classList.toggle("active", i === n);
+    });
+    const info = pages[n];
+    document.getElementById("title-text").textContent = info.title;
+    document.getElementById("title-sub").textContent  = info.sub;
+    document.getElementById("title-bar").classList.add("visible");
+  }
+
+  document.getElementById("lock-btn").addEventListener("click", () => {
+    if (!confirm("Lock and return to PIN screen?")) return;
+    sessionStorage.removeItem(KEY);
+    document.getElementById("app").style.display = "none";
+    document.getElementById("pin-gate").style.display = "flex";
+    digits.forEach(d => d.value = "");
+    setErr("");
+    fails = 0;
+    document.getElementById("pin-submit").disabled = false;
+    document.getElementById("title-bar").classList.remove("visible");
+    setTimeout(() => digits[0].focus(), 100);
+  });
+
+  document.addEventListener("contextmenu", e => e.preventDefault());
+</script>
+</body>
+</html>
