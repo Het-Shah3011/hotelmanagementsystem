@@ -1,4 +1,4 @@
-﻿const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwjsLSj5XbdyrkVcV6hpeMHcmT09hjMBWcuGvMbew7TxUa1crQSQXYeDJyMRSDCEmGKYg/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwjsLSj5XbdyrkVcV6hpeMHcmT09hjMBWcuGvMbew7TxUa1crQSQXYeDJyMRSDCEmGKYg/exec";
 
 const orderID = localStorage.getItem("orderID");
 const tableNo = localStorage.getItem("tableNo");

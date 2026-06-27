@@ -1,4 +1,4 @@
-﻿// ================= TABLE & ORDER INFO =================
+// ================= TABLE & ORDER INFO =================
 const tableNo = localStorage.getItem("tableNo");
 const orderID = localStorage.getItem("orderID");
 
@@ -21,15 +21,15 @@ if (history.pushState) {
 
 // ================= MENU DATA =================
 const menuData = {
-  "ðŸ¥£ Soups": [["Tomato Soup",70],["Veg Manchow Soup",90],["Sweet Corn Soup",80],["Hot & Sour Soup",85],["Mulligatawny Soup",95],["Lemon Coriander Soup",85],["Palak Shorba",90]],
-  "ðŸ½ï¸ Starters": [["Paneer Tikka",150],["Veg Spring Roll",130],["Stuffed Mushrooms",140],["Crispy Corn",120],["Hara Bhara Kabab",130],["Dhokla",100],["Aloo Tikki",110],["Samosa",90]],
-  "ðŸ¥— Salads": [["Green Salad",60],["Russian Salad",90],["Fruit Salad",70],["Sprouts Salad",65],["Kachumber Salad",60],["Chickpea Salad",75],["Beetroot Salad",70]],
-  "ðŸ› Main Course": [["Paneer Butter Masala",220],["Kaju Curry",210],["Veg Kolhapuri",190],["Malai Kofta",200],["Chole Bhature",180],["Baingan Bharta",170],["Aloo Gobi",160],["Dal Makhani",180]],
-  "ðŸš Rice & Biryani": [["Veg Biryani",180],["Jeera Rice",120],["Steam Rice",100],["Veg Fried Rice",140],["Lemon Rice",130],["Curd Rice",120],["Peas Pulao",150],["Tomato Rice",130]],
-  "ðŸž Roti & Breads": [["Tandoori Roti",20],["Butter Roti",25],["Plain Naan",30],["Butter Naan",40],["Garlic Naan",45],["Lachha Paratha",50],["Missi Roti",30],["Stuffed Kulcha",55],["Roomali Roti",35]],
-  "ðŸ° Desserts": [["Ice Cream",80],["Gulab Jamun",60],["Brownie with Ice Cream",120],["Rasgulla",70]],
-  "ðŸ¹ Beverages": [["Masala Chaas",40],["Lassi",60],["Fresh Lime Soda",50],["Cold Coffee",90]],
-  "ðŸ¥˜ Gujarati Sabji": [["Dry Potato Curry",120],["Brinjal Potato",140],["Bhindi Masala",150],["Mix Veg Curry",160],["Jain Mix Veg",170],["Spicy Garlic Curry",180],["Seasonal Green Veg",130]]
+  "🥣 Soups": [["Tomato Soup",70],["Veg Manchow Soup",90],["Sweet Corn Soup",80],["Hot & Sour Soup",85],["Mulligatawny Soup",95],["Lemon Coriander Soup",85],["Palak Shorba",90]],
+  "🍽️ Starters": [["Paneer Tikka",150],["Veg Spring Roll",130],["Stuffed Mushrooms",140],["Crispy Corn",120],["Hara Bhara Kabab",130],["Dhokla",100],["Aloo Tikki",110],["Samosa",90]],
+  "🥗 Salads": [["Green Salad",60],["Russian Salad",90],["Fruit Salad",70],["Sprouts Salad",65],["Kachumber Salad",60],["Chickpea Salad",75],["Beetroot Salad",70]],
+  "🍛 Main Course": [["Paneer Butter Masala",220],["Kaju Curry",210],["Veg Kolhapuri",190],["Malai Kofta",200],["Chole Bhature",180],["Baingan Bharta",170],["Aloo Gobi",160],["Dal Makhani",180]],
+  "🍚 Rice & Biryani": [["Veg Biryani",180],["Jeera Rice",120],["Steam Rice",100],["Veg Fried Rice",140],["Lemon Rice",130],["Curd Rice",120],["Peas Pulao",150],["Tomato Rice",130]],
+  "🍞 Roti & Breads": [["Tandoori Roti",20],["Butter Roti",25],["Plain Naan",30],["Butter Naan",40],["Garlic Naan",45],["Lachha Paratha",50],["Missi Roti",30],["Stuffed Kulcha",55],["Roomali Roti",35]],
+  "🍰 Desserts": [["Ice Cream",80],["Gulab Jamun",60],["Brownie with Ice Cream",120],["Rasgulla",70]],
+  "🍹 Beverages": [["Masala Chaas",40],["Lassi",60],["Fresh Lime Soda",50],["Cold Coffee",90]],
+  "🥘 Gujarati Sabji": [["Dry Potato Curry",120],["Brinjal Potato",140],["Bhindi Masala",150],["Mix Veg Curry",160],["Jain Mix Veg",170],["Spicy Garlic Curry",180],["Seasonal Green Veg",130]]
 };
 
 // ================= BUILD CATEGORY NAV =================
