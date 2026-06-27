@@ -7,6 +7,10 @@ if (!tableNo || !orderID) {
   window.location.href = "index.html";
 }
 
+if (localStorage.getItem("orderPaid") === "true") {
+  window.location.replace("payment.html");
+}
+
 document.getElementById("tableNoDisplay").textContent = tableNo;
 localStorage.setItem("sessionLocked", "true");
 

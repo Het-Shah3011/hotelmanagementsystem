@@ -35,9 +35,16 @@ function validAmount(amount) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed.toFixed(2) : null;
 }
 
-if (!orderID || !tableNo) {
-  showMessage("Order ID or Table number not found.", "#c0392b");
-} else {
+let pollTimer = null;
+
+function stopPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+}
+
+function loadOrderDetails() {
   fetch(`${WEB_APP_URL}?orderId=${encodeURIComponent(orderID)}`)
     .then(res => {
       if (!res.ok) throw new Error("Order request failed");
@@ -51,6 +58,11 @@ if (!orderID || !tableNo) {
 
       orderIsVerified = String(data.verification || "").toLowerCase() === "done";
       totalAmount = validAmount(data.total);
+      const orderIsPaid = String(data.status || "").toLowerCase() === "paid";
+
+      if (orderIsPaid) {
+        localStorage.setItem("orderPaid", "true");
+      }
 
       const itemsHtml = data.items.map(item =>
         `<div class="order-item-line"><span class="order-item-name">${escapeHtml(item)}</span></div>`
@@ -67,13 +79,21 @@ if (!orderID || !tableNo) {
         <div class="order-total-row"><span>Total</span><span>&#8377;${escapeHtml(totalAmount || data.total || 0)}</span></div>
       `;
 
+      if (orderIsPaid) {
+        showMessage("This order has already been paid. Thank you!", "#2d7a4f");
+        stopPolling();
+        return;
+      }
+
       if (!orderIsVerified) {
         showToast("Please wait for waiter verification before payment.");
+        paymentButtons.style.display = "none";
         return;
       }
 
       if (!totalAmount) {
         showToast("Invalid bill amount. Please call waiter.");
+        paymentButtons.style.display = "none";
         return;
       }
 
@@ -85,6 +105,13 @@ if (!orderID || !tableNo) {
     });
 }
 
+if (!orderID || !tableNo) {
+  showMessage("Order ID or Table number not found.", "#c0392b");
+} else {
+  loadOrderDetails();
+  pollTimer = setInterval(loadOrderDetails, 5000);
+}
+
 function payOnline() {
   if (!orderIsVerified || !totalAmount) {
     showToast("Payment is available only after waiter verification.");
@@ -94,7 +121,6 @@ function payOnline() {
   recordPaymentEvent("Payment Pending", "Online Payment Started")
     .finally(() => {
       const upiLink = `upi://pay?pa=merchant@upi&pn=${encodeURIComponent("Spice & Saffron")}&am=${encodeURIComponent(totalAmount)}&cu=INR&tn=${encodeURIComponent(orderID)}`;
-      localStorage.setItem("paymentStatus", "pending-online");
       showToast("Opening UPI app. Staff will verify payment.");
       setTimeout(() => window.location.href = upiLink, 1000);
     });
