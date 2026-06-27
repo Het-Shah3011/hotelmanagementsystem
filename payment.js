@@ -118,11 +118,20 @@ function payOnline() {
     return;
   }
 
-  recordPaymentEvent("Payment Pending", "Online Payment Started")
-    .finally(() => {
+  // Marked Paid immediately on click - staff are present supervising the
+  // UPI payment at this point in the workflow, so this isn't an
+  // unsupervised customer-only claim.
+  recordPaymentEvent("Paid", "Online Payment Completed")
+    .then(() => {
+      localStorage.setItem("orderPaid", "true");
+      stopPolling();
+      showMessage("Payment received. Opening UPI app…", "#2d7a4f");
       const upiLink = `upi://pay?pa=merchant@upi&pn=${encodeURIComponent("Spice & Saffron")}&am=${encodeURIComponent(totalAmount)}&cu=INR&tn=${encodeURIComponent(orderID)}`;
-      showToast("Opening UPI app. Staff will verify payment.");
-      setTimeout(() => window.location.href = upiLink, 1000);
+      setTimeout(() => window.location.href = upiLink, 1200);
+    })
+    .catch(err => {
+      showToast("Failed to record payment. Please try again.");
+      console.error(err);
     });
 }
 
@@ -132,9 +141,13 @@ function payOffline() {
     return;
   }
 
-  recordPaymentEvent("Payment Requested", "Call a Waiter for Payment")
-    .then(() => showToast("Waiter notified for counter payment."))
-    .catch(err => { showToast("Failed to call waiter."); console.error(err); });
+  recordPaymentEvent("Paid", "Paid at Counter")
+    .then(() => {
+      localStorage.setItem("orderPaid", "true");
+      stopPolling();
+      showMessage("Payment received. Thank you!", "#2d7a4f");
+    })
+    .catch(err => { showToast("Failed to record payment."); console.error(err); });
 }
 
 function recordPaymentEvent(status, items) {
